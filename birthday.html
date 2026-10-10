@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Moti! 🎀</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: radial-gradient(circle, #fff0f5 0%, #ffccd5 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .rain-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
+        .falling-item { position: absolute; font-size: 2rem; top: -50px; animation: fall linear infinite; }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+        .card-container { position: relative; z-index: 10; background: white; padding: 30px; border-radius: 30px; width: 90%; max-width: 480px; text-align: center; box-shadow: 0 20px 40px rgba(255, 75, 110, 0.25); border: 4px solid #ff4d6d; }
+        .kitty-head { position: relative; width: 120px; height: 90px; background: white; border: 4px solid #000; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; margin: 10px auto 20px; animation: bounce 3s infinite ease-in-out; }
+        .kitty-head::before, .kitty-head::after { content: ""; position: absolute; top: -8px; width: 30px; height: 30px; background: white; border: 4px solid #000; }
+        .kitty-head::before { left: 5px; border-radius: 30% 70% 30% 40% / 30% 70% 30% 30%; transform: rotate(-15deg); border-bottom: none; border-right: none;}
+        .kitty-head::after { right: 5px; border-radius: 70% 30% 40% 30% / 70% 30% 30% 30%; transform: rotate(15deg); border-bottom: none; border-left: none;}
+        .bow { position: absolute; top: -5px; right: 10px; background: #ff0054; width: 20px; height: 20px; border-radius: 50%; border: 3px solid #000; z-index: 5; }
+        .bow::before, .bow::after { content: ""; position: absolute; top: -4px; background: #ff0054; width: 18px; height: 22px; border: 3px solid #000; border-radius: 40%; }
+        .bow::before { left: -15px; transform: rotate(-20deg); }
+        .bow::after { right: -15px; transform: rotate(20deg); }
+        .eyes { position: absolute; top: 40px; width: 8px; height: 12px; background: #000; border-radius: 50%; }
+        .left-eye { left: 30px; }
+        .right-eye { right: 30px; }
+        .nose { position: absolute; top: 50px; left: 53px; width: 12px; height: 8px; background: #ffe600; border: 3px solid #000; border-radius: 50%; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        h1 { font-family: 'Fredoka One', cursive; color: #ff4d6d; font-size: 2rem; margin-bottom: 5px; }
+        .food-tagline { font-size: 0.95rem; color: #ff70a6; font-weight: 600; margin-bottom: 20px; }
+        .view-section { display: none; text-align: center; }
+        .view-section.active { display: block; }
+        .action-btn { background: #ff4d6d; border: 3px solid #000; color: white; font-family: 'Fredoka One', cursive; padding: 10px 25px; font-size: 1rem; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 0 #c9184a; transition: all 0.2s ease; outline: none; margin-top: 15px; }
+        .action-btn:hover { transform: translateY(2px); box-shadow: 0 3px 0 #c9184a; }
+        .action-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #c9184a; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .opt-btn { background: #fff; border: 2px solid #ff70a6; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; color: #4a4a4a; transition: all 0.2s; }
+        .opt-btn:hover { background: #ffe5ec; }
+        .crossword-container { display: grid; grid-template-columns: repeat(5, 40px); gap: 5px; justify-content: center; margin: 20px auto; }
+        .cross-cell { width: 40px; height: 40px; text-align: center; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; border: 2px solid #000; border-radius: 6px; }
+        .cross-cell:disabled { background: #222; border: 2px solid #222; color: white; }
+        .clues { text-align: left; font-size: 0.85rem; background: #fff5f7; padding: 10px; border-radius: 8px; margin-top: 15px; }
+        .letter-content { text-align: left; background: #fff0f3; border-radius: 15px; padding: 20px; border: 3px dashed #ff70a6; margin-top: 20px; }
+        .note-section { background: #ffe5ec; border-left: 4px solid #ff4d6d; padding: 10px; margin: 15px 0; font-style: italic; border-radius: 4px; }
+        .thank-you-text { font-weight: 600; color: #ff0054; text-align: center; margin-top: 15px; border-top: 1px solid #ffccd5; padding-top: 10px; }
+        .score-badge { background: #ff4d6d; color: white; font-family: 'Fredoka One', cursive; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="rain-container" id="rainBox"></div>
+
+    <div class="card-container">
+        <div class="kitty-head"><div class="bow"></div><div class="eyes left-eye"></div><div class="eyes right-eye"></div><div class="nose"></div></div>
+        <h1>Happy Birthday Apeksha!</h1>
+        <p class="food-tagline">🧁 May your day be sweeter than cake! 🍕</p>
+
+        <!-- STAGE 1: Welcome Menu -->
+        <div id="view-welcome" class="view-section active">
+            <p style="margin-bottom:15px; color:#555;">To open your actual gift note, you must defeat the Ultimate Bestie Challenge! Are you ready?</p>
+            <button class="action-btn" onclick="switchView('view-quiz')">Start Challenge! 🎮</button>
+        </div>
+
+        <!-- STAGE 2: 8 Trivia Questions -->
+        <div id="view-quiz" class="view-section">
+            <p id="quiz-progress" style="font-weight:600; color:#ff4d6d;"></p>
+            <h3 id="quiz-question" style="margin: 15px 0; color:#333;"></h3>
+            <div class="options-grid" id="quiz-options"></div>
+        </div>
+
+        <!-- STAGE 3: Crossword puzzle grid -->
+        <div id="view-crossword" class="view-section">
+            <h3 style="color:#ff4d6d; margin-bottom: 10px;">Solve the Mini Foodie Grid!</h3>
+            <div class="score-badge" id="quiz-score-display">Score: 0/8</div>
+            <p style="font-size:0.85rem; color:#666;">Fill in the blank boxes below to reveal the secret note.</p>
+            
+            <div class="crossword-container">
+                <!-- Row 1: M [ ] [ ] [ ] [X] -->
+                <input type="text" maxlength="1" class="cross-cell" id="c00" value="M" disabled>
+                <input type="text" maxlength="1" class="cross-cell" id="c01">
+                <input type="text" maxlength="1" class="cross-cell" id="c02">
+                <input type="text" maxlength="1" class="cross-cell" id="c03">
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+
+                <!-- Row 2: [X] [X] [X] O [X] -->
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" id="c13" value="O" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+
+                <!-- Row 3: [X] [ ] [ ] [ ] [X] -->
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" id="c21">
+                <input type="text" maxlength="1" class="cross-cell" id="c22">
+                <input type="text" maxlength="1" class="cross-cell" id="c23">
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+
+                <!-- Row 4: [X] [X] [X] N [X] -->
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+                <input type="text" maxlength="1" class="cross-cell" id="c33" value="N" disabled>
+                <input type="text" maxlength="1" class="cross-cell" disabled>
+
+                <!-- Row 5: [ ] [ ] [ ] [ ] [ ] -->
+                <input type="text" maxlength="1" class="cross-cell" id="c40">
+                <input type="text" maxlength="1" class="cross-cell" id="c41">
+                <input type="text" maxlength="1" class="cross-cell" id="c42">
+                <input type="text" maxlength="1" class="cross-cell" id="c43">
+                <input type="text" maxlength="1" class="cross-cell" id="c44">
+            </div>
+
+            <div class="clues">
+                <strong>📜 Across:</strong><br>
+                1. The legendary nickname given to a very special, food-loving bestie. (4 Letters)<br>
+                3. The iconic crimson accessory Hello Kitty wears near her ear since 1974. (3 Letters)<br>
+                5. The ancient birthday treat that humans have enjoyed blowing candles on for centuries. (5 Letters)<br><br>
+                <strong>📜 Down:</strong><br>
+                4. A vertical puzzle helper word connecting through the nickname letter 'I'. (5 Letters)
+            </div>
+
+            <button class="action-btn" onclick="checkCrossword()">Verify Answers 🍰</button>
+        </div>
+
+        <!-- STAGE 4: Final Message Panel Reveal -->
+        <div id="view-final" class="view-section">
+            <div class="score-badge" id="final-score-display">Final Score: 0/8</div>
+            <div class="letter-content">
+                <p><strong>Happy Birthday, Moti! 🎀</strong></p>
+                <p>Wishing an incredible birthday to a girl who loves all things cute and delicious! May your plate always be full of your absolute favorite treats, and may your year ahead be filled with beautiful moments and zero-calorie cravings.</p>
+                
+                <div class="note-section">
+                    <p><strong>P.S. Just a small confession...</strong> Crazy to think that if I hadn't made that move back then, we would never have become friends. Honestly, it's one of the best choices I've ever made. 😉</p>
+                </div>
+
+                <p class="thank-you-text">✨ Thank you for being the most amazing female friend a guy could ask for! Cheers to more food trips and endless laughs! ✨</p>
+                <p style="text-align: center; font-size: 1.5rem; margin-top: 15px;">🍔 + 🍩 + 🎀 = ✨❤️✨</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const items = ['🎀', '🍩', '🍰', '🍕', '🍔', '🍦', '🍓', '🍪'];
+        setInterval(() => {
+            const drop = document.createElement('div');
+            drop.classList.add('falling-item');
+            drop.innerText = items[Math.floor(Math.random() * items.length)];
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            drop.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+            document.getElementById('rainBox').appendChild(drop);
+            setTimeout(() => drop.remove(), 7000);
+        }, 350);
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if(viewId === 'view-quiz') loadQuestion();
+        }
+
+        // Full 8-Question Database with history-themed and personal queries
+        const quizData = [
+            { q: "What sport does your favorite friend like the most?", o: ["Football", "Cricket", "Tennis", "All"], a: "All" },
+            { q: "Who is his absolute idol?", o: ["Cristiano", "Napoleon", "Alexander the Great", "Patrick Jane", "All"], a: "All" },
+            { q: "What's the most embarrassing thing he did in class?", o: ["Loudspeaker", "Slept Loudly", "Dropped Lunch", "Wrong Room"], a: "Loudspeaker" },
+            { q: "How long has he been using WorldLink Wi-Fi without ever logging into the mobile application?", o: ["1 Month", "2 Months", "6 Months", "1 Year"], a: "1 Month" },
+            { q: "Where does he tirelessly work on his studies every single day?", o: ["Kathmandu Model Secondary School", "Stanford University", "Gaming Arcade", "A Local Cafe"], a: "Kathmandu Model Secondary School" },
+            { q: "In ancient history, which civilization invented the first variations of Birthday Cake?", o: ["Ancient Egyptians", "Roman Empire", "Vikings", "Aztecs"], a: "Ancient Egyptians" },
+            { q: "Historically, in what country was the very first Pizza created?", o: ["Italy", "France", "Greece", "China"], a: "Italy" },
+            { q: "In the history of pop culture, which city was Hello Kitty officially born in?", o: ["London", "Tokyo", "New York", "Paris"], a: "London" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            if(currentQuestionIndex >= quizData.length) {
+                document.getElementById('quiz-score-display').innerText = `Quiz Score: ${score}/8`;
+                switchView('view-crossword');
+                return;
+            }
+            document.getElementById('quiz-progress').innerText = `Question ${currentQuestionIndex + 1} of 8`;
+            document.getElementById('quiz-question').innerText = quizData[currentQuestionIndex].q;
+            
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+            
+            quizData[currentQuestionIndex].o.forEach(option => {
+                const btn = document.createElement('button');
+                btn.classList.add('opt-btn');
+                btn.innerText = option;
+                btn.onclick = () => {
+                    if(option === quizData[currentQuestionIndex].a) { score++; }
+                    currentQuestionIndex++;
+                    loadQuestion();
+                };
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function checkCrossword() {
+            const answers = {
+                c01: 'O', c02: 'T', c03: 'I',
+                c21: 'B', c22: 'O', c23: 'W',
+                c40: 'C', c41: 'A', c42: 'K', c43: 'E', c44: 'S'
+            };
+            let correct = true;
+            for (let id in answers) {
+                const inputVal = document.getElementById(id).value.trim().toUpperCase();
+                if(inputVal !== answers[id]) {
+                    correct = false;
+                    document.getElementById(id).style.borderColor = 'red';
+                } else {
+                    document.getElementById(id).style.borderColor = 'green';
+                }
+            }
+            if(correct) {
+                document.getElementById('final-score-display').innerText = `Challenge Cleared! Quiz Score: ${score}/8`;
+                switchView('view-final');
+            } else {
+                alert("Some letters in the puzzle matrix look incorrect! Check your spelling! 🧐");
+            }
+        }
+    </script>
+</body>
+</html>
